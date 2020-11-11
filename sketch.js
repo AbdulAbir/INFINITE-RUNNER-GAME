@@ -11,6 +11,7 @@ var obstaclesGroup, obstacle1, obstacle2, obstacle3, obstacle4, obstacle5, obsta
 var score;
 var gameOver,gameOverImage;
 var restart,restartImage;
+var cam2;
 
 
 function preload(){
@@ -34,23 +35,30 @@ function preload(){
 }
 
 function setup() {
-  createCanvas(800, 200);
-  
+  createCanvas(windowWidth,windowHeight,WEBGL);
 
-  ground = createSprite(200,180,100000,20);
-  ground.addImage("ground",groundImage);
-  ground.x = ground.width/3;
-  
-  trex = createSprite(50,180,20,50);
+  trex = createSprite(-200,180,20,50);
   trex.addAnimation("running", trex_running);
   trex.addAnimation("collided" , trex_collided)
   trex.scale = 0.5;
   x = displayHeight - trex.distance;
+
+  ground = createSprite(200,180,1000,20);
+  ground.addImage(groundImage);
+  //ground.x = ground.width/3;
+  //ground.velocityX = 0;
+
+   cam2 = createCamera(); 
+  // cam2.setPosition(sin(frameCount / 60) * 0, -300, 600); 
+  // cam2.lookAt(0, 0,0);
   
   
   
   
-  invisibleGround = createSprite(200,190,100000,10);
+  
+  
+  
+  invisibleGround = createSprite(200,180,1000,10);
   invisibleGround.visible = false;
   
   //create Obstacle and Cloud Groups
@@ -64,32 +72,31 @@ function setup() {
   
   score = 0;
   
-  gameOver = createSprite(displayWidth,50);
+  gameOver = createSprite(displayWidth/2,50);
   gameOver.addImage("Over",gameOverImage);
   gameOver.scale = 0.5;
   
-  restart= createSprite(displayWidth, 100);
+  restart= createSprite(displayWidth/2, 100);
   restart.addImage("restart",restartImage);
   restart.scale = 0.5;
-  
+ 
 }
 
 function draw() {
   background(180);
   //displaying score
   text("Score: "+ score, 500,50);
-
+  console.log(trex.x);
   
   
-  console.log("this is ",gameState)
+  // console.log("this is ",gameState)
   
   
   if(gameState === PLAY)
   {
      gameOver.visible = false;
      restart.visible = false;
-    camera.position.x = trex.x+200;
-   camera.position.y = displayWidth/16;
+    
     
     //move the ground
     
@@ -101,13 +108,13 @@ function draw() {
     // }
     
     //jump when the space key is pressed
-    if(keyDown("space")&& trex.y >=160) {
+    if(keyDown("space")&& trex.y >=150) {
         trex.velocityY = -13;
     }
     
     
     
-        trex.velocityX = 4;
+   //     trex.velocityX = 4;
         
      
      //else{
